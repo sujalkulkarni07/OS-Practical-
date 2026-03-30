@@ -1,0 +1,7 @@
+echo "Enter Your Filename:"
+read newfilel
+if [ -f "$newfilel" ]; then
+echo "File Is Found."
+else
+echo "File Is Not Found."
+fi
