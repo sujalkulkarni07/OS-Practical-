@@ -1,0 +1,17 @@
+check_palindrome()
+{
+local str="$1"
+local len=${#str}
+local reversed=""
+for (( i=$len-1; i>=0; i-- )); do
+reversed="$reversed${str:$i:1}"
+done
+if [ "$str" == "$reversed" ]; then
+echo "The String '$str' Is A Palindrome."
+else
+echo "The String '$str' Is Not A Palindrome."
+fi
+}
+echo -n "Enter The String: "
+read input_string
+check_palindrome "$input_string"
