@@ -1,3 +1,4 @@
+"FCFS"
 #include <stdio.h>
 // Function to calculate and display FCFS scheduling
 void FCFS(int n, int bt[]) {
@@ -41,3 +42,101 @@ scanf("%d", &bt[i]);
 FCFS(n, bt);
 return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"Round Robin Algorithm."
+#include <stdio.h>
+// Function to perform Round Robin scheduling
+void RoundRobin(int n, int bt[], int quantum) {
+int rem_bt[n], wt[n], tat[n];
+int total_wt = 0, total_tat = 0, time = 0;
+// Initialize remaining burst times for all processes
+for (int i = 0; i < n; i++) {
+rem_bt[i] = bt[i];
+}
+// Perform Round Robin scheduling
+while (1) {
+int done = 1;
+// Traverse each process to execute based on remaining burst time
+for (int i = 0; i < n; i++) {
+if (rem_bt[i] > 0) {
+done = 0; // A process is still incomplete
+if (rem_bt[i] > quantum) {
+time += quantum; // Process executes for the quantum time
+rem_bt[i] -= quantum;
+} else {
+time += rem_bt[i]; // Process completes in this cycle
+wt[i] = time - bt[i]; // Waiting time is time elapsed minus burst time
+rem_bt[i] = 0; // Process has finished
+}
+}
+}
+// Break out of the loop if all processes are completed
+if (done == 1) break;
+// Calculate Turnaround Time (TAT) for all processes
+for (int i = 0; i < n; i++) {
+tat[i] = bt[i] + wt[i]; // Turnaround time is burst time + waiting time
+total_wt += wt[i];
+total_tat += tat[i];
+}
+// Display the results of Round Robin Scheduling
+printf("\nRound Robin Scheduling:\n");
+printf("Process\tBurst Time\tWaiting Time\tTurnaround Time\n");
+for (int i = 0; i < n; i++) {
+printf("P%d\t%d\t\t%d\t\t%d\n", i + 1, bt[i], wt[i], tat[i]);
+}
+// Display the average waiting and turnaround times
+printf("\nAverage Waiting Time: %.2f", (float)total_wt / n);
+printf("\nAverage Turnaround Time: %.2f\n", (float)total_tat / n);
+}
+int main() {
+int n, quantum;
+// Input number of processes
+printf("Enter the number of processes: ");
+scanf("%d", &n);
+// Array to store burst times for each process
+int bt[n];
+// Input burst time for each process
+for (int i = 0; i < n; i++) {
+printf("Enter burst time for process P%d: ", i + 1);
+scanf("%d", &bt[i]);
+}
+// Input time quantum for Round Robin scheduling
+printf("Enter time quantum: ");
+scanf("%d", &quantum);
+// Call Round Robin function to perform the scheduling
+RoundRobin(n, bt, quantum);
+return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
