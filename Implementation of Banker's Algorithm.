@@ -1,0 +1,82 @@
+#include <stdio.h>
+int main() {
+int n, m, i, j, k;
+// User input for number of processes (n) and number of resources (m)
+printf("Enter the number of processes: ");
+scanf("%d", &n);
+printf("Enter the number of resources: ");
+scanf("%d", &m);
+// Matrices for allocation, maximum resources, and available resources
+int alloc[n][m], max[n][m], avail[m];
+// User input for Allocation Matrix
+printf("\nEnter Allocation Matrix:\n");
+for (i = 0; i < n; i++) {
+printf("Enter allocation for process P%d: ", i);
+for (j = 0; j < m; j++) {
+scanf("%d", &alloc[i][j]);
+}
+}
+// User input for Max Matrix
+printf("\nEnter Max Matrix:\n");
+for (i = 0; i < n; i++) {
+printf("Enter max resources for process P%d: ", i);
+for (j = 0; j < m; j++) {
+scanf("%d", &max[i][j]);
+}
+}
+// User input for Available Resources
+printf("\nEnter available resources: ");
+for (i = 0; i < m; i++) {
+scanf("%d", &avail[i]);
+}
+int f[n], ans[n], ind = 0;
+for (k = 0; k < n; k++) {
+f[k] = 0; // Initialize all processes as not finished
+}
+int need[n][m]; // Matrix to store the need (Max - Allocation)
+for (i = 0; i < n; i++) {
+for (j = 0; j < m; j++) {
+need[i][j] = max[i][j] - alloc[i][j];
+}
+}
+// Banker's Algorithm Logic
+int y = 0;
+for (k = 0; k < n; k++) {
+for (i = 0; i < n; i++) {
+if (f[i] == 0) { // Check if the process is not finished
+int flag = 0;
+for (j = 0; j < m; j++) {
+if (need[i][j] > avail[j]) {
+flag = 1; // Process cannot proceed
+break;
+}
+}
+if (flag == 0) { // Process can proceed
+ans[ind++] = i;
+for (y = 0; y < m; y++) {
+avail[y] += alloc[i][y]; // Release the allocated resources
+}
+f[i] = 1; // Mark the process as finished
+}
+}
+}
+}
+// Checking if all processes are finished
+int flag = 1;
+for (i = 0; i < n; i++) {
+if (f[i] == 0) { // If there is a process not finished, system is not safe
+flag = 0;
+printf("\nThe following system is not safe. \n");
+break;
+}
+}
+// If all processes are finished, print the safe sequence
+if (flag == 1) {
+printf("\nFollowing is the SAFE Sequence:\n");
+for (i = 0; i < n - 1; i++) {
+printf(" P%d ->", ans[i]);
+}
+printf(" P%d\n", ans[n - 1]);
+}
+return 0;
+}
