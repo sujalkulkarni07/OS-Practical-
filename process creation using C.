@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <sys/types.h>
+#include <unistd.h>
+int main() {
+// Create a new process using fork
+pid_t pid = fork();
+// Check if the fork was successful
+if (pid < 0) {
+// Error in creating process
+perror("Fork Failed");
+return 1;
+}
+// Both parent and child process will execute this part
+if (pid == 0) {
+// Child process
+printf("\nHello From The Child Process!\n");
+} else {
+// Parent process
+printf("\nHello From The Parent Process!\n");
+}
+return 0;
+}
