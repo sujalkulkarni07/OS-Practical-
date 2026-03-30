@@ -1,0 +1,43 @@
+#include <stdio.h>
+// Function to calculate and display FCFS scheduling
+void FCFS(int n, int bt[]) {
+int wt[n], tat[n]; // Arrays to store waiting time and turnaround time
+int total_wt = 0, total_tat = 0;
+// The waiting time for the first process is always 0
+wt[0] = 0;
+// Calculate waiting time for each process
+for (int i = 1; i < n; i++) {
+wt[i] = wt[i - 1] + bt[i - 1];
+}
+// Calculate turnaround time for each process and accumulate totals
+for (int i = 0; i < n; i++) {
+tat[i] = wt[i] + bt[i];
+total_wt += wt[i];
+total_tat += tat[i];
+}
+// Print the scheduling results
+printf("\nFCFS Scheduling:\n");
+printf("Process\tBurst Time\tWaiting Time\tTurnaround Time\n");
+for (int i = 0; i < n; i++) {
+printf("P%d\t%d\t\t%d\t\t%d\n", i + 1, bt[i], wt[i], tat[i]);
+}
+// Print the averages
+printf("\nAverage Waiting Time: %.2f", (float)total_wt / n);
+printf("\nAverage Turnaround Time: %.2f\n", (float)total_tat / n);
+}
+int main() {
+int n;
+// Input number of processes
+printf("Enter the number of processes: ");
+scanf("%d", &n);
+// Array to store burst times for each process
+int bt[n];
+// Input burst times for each process
+for (int i = 0; i < n; i++) {
+printf("Enter burst time for process P%d: ", i + 1);
+scanf("%d", &bt[i]);
+}
+// Call FCFS function to perform the scheduling
+FCFS(n, bt);
+return 0;
+}
